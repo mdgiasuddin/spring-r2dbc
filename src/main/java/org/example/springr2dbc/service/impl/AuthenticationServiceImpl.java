@@ -1,10 +1,10 @@
 package org.example.springr2dbc.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.springr2dbc.config.security.AppUserDetails;
 import org.example.springr2dbc.config.security.JwtService;
 import org.example.springr2dbc.model.dto.request.LoginRequest;
 import org.example.springr2dbc.model.dto.response.LoginResponse;
-import org.example.springr2dbc.model.entity.User;
 import org.example.springr2dbc.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -26,10 +26,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Mono<ResponseEntity<LoginResponse>> login(LoginRequest request) {
         Mono<UserDetails> userMono = userDetailsService.findByUsername(request.username())
-                .defaultIfEmpty(new User());
+                .defaultIfEmpty(new AppUserDetails());
 
         return userMono.flatMap(user -> {
-            if (user.getUsername() == null) {
+            if (user.getUsername().equals("INVALID_USER") || !user.isEnabled()) {
                 return Mono.just(ResponseEntity.status(UNAUTHORIZED).body(new LoginResponse()));
             }
             if (passwordEncoder.matches(request.password(), user.getPassword())) {
