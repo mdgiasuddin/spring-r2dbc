@@ -1,5 +1,6 @@
 package org.example.springr2dbc.controller;
 
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.example.springr2dbc.model.dto.request.BookCreateRequest;
 import org.example.springr2dbc.model.dto.response.BookResponse;
@@ -36,7 +37,7 @@ public class BookController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/{id}")
-    public Mono<BookResponse> getBookById(@PathVariable int id) {
+    public Mono<BookResponse> getBookById(@PathVariable @Min(1) int id) {
         return bookService.getBookById(id);
     }
 }

@@ -3,7 +3,6 @@ package org.example.springr2dbc.exception;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,12 +22,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuleViolationException.class)
     public ExceptionResponse handleException(RuleViolationException e) {
         return new ExceptionResponse(e.getCode(), e.getMessage());
-    }
-
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(AuthenticationException.class)
-    public ExceptionResponse handleException(AuthenticationException e) {
-        return new ExceptionResponse("AUTHENTICATION_FAILED", e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
