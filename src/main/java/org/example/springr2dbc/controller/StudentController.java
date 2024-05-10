@@ -1,7 +1,7 @@
 package org.example.springr2dbc.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springr2dbc.model.projection.StudentPojo;
+import org.example.springr2dbc.model.dto.response.StudentResponse;
 import org.example.springr2dbc.service.StudentService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @GetMapping
-    public Flux<StudentPojo> getAllStudents() {
+    public Flux<StudentResponse> getAllStudents() {
         return studentService.getAllStudents();
     }
 }
