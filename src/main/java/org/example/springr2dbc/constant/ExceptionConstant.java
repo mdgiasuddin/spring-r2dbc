@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ExceptionConstant {
-    LOGGED_IN_INFORMATION_MISSING("No logged in information found!");
+    ENTITY_NOT_FOUND("No %s found by %s: %s");
 
     private final String message;
 }

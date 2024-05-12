@@ -1,6 +1,7 @@
 package org.example.springr2dbc.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.springr2dbc.exception.ResourceNotFoundException;
 import org.example.springr2dbc.model.dto.request.BookCreateRequest;
 import org.example.springr2dbc.model.dto.response.BookResponse;
 import org.example.springr2dbc.model.entity.Book;
@@ -9,6 +10,8 @@ import org.example.springr2dbc.service.BookService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import static org.example.springr2dbc.constant.ExceptionConstant.ENTITY_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +34,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public Mono<BookResponse> getBookById(int id) {
         return bookRepository.findById(id)
-                .map(BookResponse::new);
+                .map(BookResponse::new)
+                .switchIfEmpty(
+                        Mono.error(new ResourceNotFoundException(ENTITY_NOT_FOUND, "Book", "ID", String.valueOf(id)))
+                );
     }
 }
